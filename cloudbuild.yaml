@@ -42,10 +42,10 @@ steps:
 # [END cloudbuild]
 
 # [START cloudbuild-trigger-cd]
-# Access the id_github_2 file from Secret Manager
+# Access the id_github file from Secret Manager
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: 'bash'
-  args: [ '-c', 'gcloud secrets versions access latest --secret=secret-name-2 > /root/.ssh/id_github_2' ]
+  args: [ '-c', 'gcloud secrets versions access latest --secret=env-secret > /root/.ssh/id_github' ]
   volumes:
   - name: 'ssh'
     path: /root/.ssh
@@ -56,10 +56,10 @@ steps:
   args:
   - '-c'
   - |
-    chmod 600 /root/.ssh/id_github_2
+    chmod 600 /root/.ssh/id_github
     cat <<EOF >/root/.ssh/config
     Hostname github.com
-    IdentityFile /root/.ssh/id_github_2
+    IdentityFile /root/.ssh/id_github
     EOF
     ssh-keyscan -t rsa github.com > /root/.ssh/known_hosts
   volumes:
